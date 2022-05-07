@@ -1,0 +1,39 @@
+## Interface: 11403
+## Title: MailBuddy
+## Version: v9.2.0
+## X-Build: 101
+## X-Revision: 101
+## Author: Zetaprime82
+## X-Category: Mail
+## Notes: MailBuddy: Enhanced Mailbox support
+## OptionalDeps: Ace3, !BlizzBugsSuck, !ClassColors
+## SavedVariables: MailBuddy3DB
+
+## LoadManagers: AddonLoader
+## X-LoadOn-Mailbox: true
+
+#@no-lib-strip@
+Libs\LibStub\LibStub.lua
+Libs\CallbackHandler-1.0\CallbackHandler-1.0.xml
+Libs\AceAddon-3.0\AceAddon-3.0.xml
+Libs\AceEvent-3.0\AceEvent-3.0.xml
+Libs\AceDB-3.0\AceDB-3.0.xml
+Libs\AceHook-3.0\AceHook-3.0.xml
+Libs\AceLocale-3.0\AceLocale-3.0.xml
+#@end-no-lib-strip@
+
+Localization.lua
+MailBuddy.lua
+
+# Users can comment out any module (or delete the .lua) of any module they do not wish to load
+## Modules\Express.lua
+Modules\OpenAll.lua
+## Modules\Wire.lua
+## Modules\Select.lua
+## Modules\TradeBlock.lua
+## Modules\Rake.lua
+## Modules\BlackBook.lua
+## Modules\DoNotWant.lua
+## Modules\CarbonCopy.lua
+## Modules\Forward.lua
+## Modules\QuickAttach.lua
