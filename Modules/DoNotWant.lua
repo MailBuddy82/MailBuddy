@@ -1,7 +1,7 @@
-local Postal = LibStub("AceAddon-3.0"):GetAddon("Postal")
-local Postal_DoNotWant = Postal:NewModule("DoNotWant", "AceHook-3.0")
+local MailBuddy = LibStub("AceAddon-3.0"):GetAddon("MailBuddy")
+local MailBuddy_DoNotWant = MailBuddy:NewModule("DoNotWant", "AceHook-3.0")
 local L = LibStub("AceLocale-3.0"):GetLocale("Postal")
-Postal_DoNotWant.description = L["Shows a clickable visual icon as to whether a mail will be returned or deleted on expiry."]
+MailBuddy_DoNotWant.description = L["Shows a clickable visual icon as to whether a mail will be returned or deleted on expiry."]
 
 -- luacheck: globals InboxFrame
 
@@ -9,7 +9,7 @@ local _G = getfenv(0)
 local selectedID
 local selectedIDmoney
 
-StaticPopupDialogs["POSTAL_DELETE_MAIL"] = {
+StaticPopupDialogs["MAILBUDDY_DELETE_MAIL"] = {
 	text = DELETE_MAIL_CONFIRMATION,
 	button1 = ACCEPT,
 	button2 = CANCEL,
@@ -23,7 +23,7 @@ StaticPopupDialogs["POSTAL_DELETE_MAIL"] = {
 	hideOnEscape = 1
 }
 
-StaticPopupDialogs["POSTAL_DELETE_MONEY"] = {
+StaticPopupDialogs["MAILBUDDY_DELETE_MONEY"] = {
 	text = DELETE_MONEY_CONFIRMATION,
 	button1 = ACCEPT,
 	button2 = CANCEL,
@@ -41,7 +41,7 @@ StaticPopupDialogs["POSTAL_DELETE_MONEY"] = {
 	hideOnEscape = 1
 }
 
-function Postal_DoNotWant.Click(self, button, down)
+function MailBuddy_DoNotWant.Click(self, button, down)
 	selectedID = self.id + (InboxFrame.pageNum-1)*7
 	local packageIcon, stationeryIcon, sender, subject, money, CODAmount, daysLeft, itemCount, wasRead, wasReturned, textCreated, canReply = GetInboxHeaderInfo(selectedID)
 	selectedIDmoney = money
@@ -52,10 +52,10 @@ function Postal_DoNotWant.Click(self, button, down)
 	end
 	if InboxItemCanDelete(selectedID) then
 		if firstAttachName then
-			StaticPopup_Show("POSTAL_DELETE_MAIL", firstAttachName)
+			StaticPopup_Show("MAILBUDDY_DELETE_MAIL", firstAttachName)
 			return
 		elseif money and money > 0 then
-			StaticPopup_Show("POSTAL_DELETE_MONEY")
+			StaticPopup_Show("MAILBUDDY_DELETE_MONEY")
 			return
 		else
 			DeleteInboxItem(selectedID)
@@ -68,7 +68,7 @@ function Postal_DoNotWant.Click(self, button, down)
 	--HideUIPanel(OpenMailFrame)
 end
 
-function Postal_DoNotWant:OnEnable()
+function MailBuddy_DoNotWant:OnEnable()
 	-- Create the icons
 	for i = 1, 7 do
 		local b = _G["MailItem"..i.."ExpireTime"]
@@ -101,7 +101,7 @@ function Postal_DoNotWant:OnDisable()
 	end
 end
 
-function Postal_DoNotWant:InboxFrame_Update()
+function MailBuddy_DoNotWant:InboxFrame_Update()
 	self.hooks["InboxFrame_Update"]()
 	for i = 1, 7 do
 		local index = i + (InboxFrame.pageNum-1)*7
