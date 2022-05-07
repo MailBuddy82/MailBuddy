@@ -27,6 +27,6 @@ function MailBuddy_Rake:MAIL_CLOSED()
 	self:UnregisterEvent("MAIL_CLOSED")
 	money = GetMoney() - money
 	if money > 0 then
-		Postal:Print(L["Collected"].." "..Postal:GetMoneyString(money))
+		MailBuddy:Print(L["Collected"].." "..MailBuddy:GetMoneyString(money))
 	end
 end
