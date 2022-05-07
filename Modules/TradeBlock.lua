@@ -1,20 +1,20 @@
-local Postal = LibStub("AceAddon-3.0"):GetAddon("Postal")
-local Postal_TradeBlock = Postal:NewModule("TradeBlock", "AceEvent-3.0")
+local MailBuddy = LibStub("AceAddon-3.0"):GetAddon("MailBuddy")
+local MailBuddy_TradeBlock = MailBuddy:NewModule("TradeBlock", "AceEvent-3.0")
 local L = LibStub("AceLocale-3.0"):GetLocale("Postal")
-Postal_TradeBlock.description = L["Block incoming trade requests while in a mail session."]
+MailBuddy_TradeBlock.description = L["Block incoming trade requests while in a mail session."]
 
-function Postal_TradeBlock:OnEnable()
+function MailBuddy_TradeBlock:OnEnable()
 	self:RegisterEvent("MAIL_SHOW")
 end
 
-function Postal_TradeBlock:OnDisable()
+function MailBuddy_TradeBlock:OnDisable()
 	-- Disabling modules unregisters all events/hook automatically
 	SetCVar("BlockTrades", 0)
 	ClosePetition()
 	PetitionFrame:RegisterEvent("PETITION_SHOW")
 end
 
-function Postal_TradeBlock:MAIL_SHOW()
+function MailBuddy_TradeBlock:MAIL_SHOW()
 	PetitionFrame:UnregisterEvent("PETITION_SHOW")
 	if IsAddOnLoaded("Lexan") then return end
 	if GetCVar("BlockTrades") == "0" then
@@ -24,7 +24,7 @@ function Postal_TradeBlock:MAIL_SHOW()
 	end
 end
 
-function Postal_TradeBlock:Reset()
+function MailBuddy_TradeBlock:Reset()
 	self:UnregisterEvent("MAIL_CLOSED")
 	self:UnregisterEvent("PLAYER_LEAVING_WORLD")
 	SetCVar("BlockTrades", 0)
