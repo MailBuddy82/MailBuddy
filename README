@@ -1,0 +1,53 @@
+About MailBuddy
+
+MailBuddy offers enhanced mailbox support by providing the following features:
+
+- BlackBook: Adds a contact list next to the To: field.
+- Tracks all your characters (as you log each one on) and list them if they are on the same realm/faction on an "Alts" list
+- Tracks the last 20 players you mailed on a "Recently Mailed" list.
+- Autocomplete names from Alts/Recently Mailed/Contacts/Friends/Guild list. You can choose which of these lists to use.
+- Option to autofill in the last person mailed to the To: field.
+- Option to disable Blizzard's name auto-completion popup.
+- CarbonCopy: Allows you to copy the contents of a mail.
+- DoNotWant: Shows a clickable visual icon as to whether a mail will be returned or deleted on expiry.
+- Express: Adds shortcuts
+- Shift-Click to take item/money from mail
+- Ctrl-Click to return mail
+- Alt-Click to move an item from your inventory to the current outgoing mail (same as right click in default UI)
+- Added option to disable multiple item mail tooltips.
+- Forward: Allows you to forward the contents of a mail.
+- OpenAll: Allows you to open all mails of selected types at one go in your inbox unattended.
+- All AH Cancelled mail
+- All AH Expired mail
+- All AH Outbidded mail
+- All AH Success mail
+- All AH Won mail
+- Non-AH mail with attachments
+- AH settings are divided into neutral and faction-specific settings.
+- Shift-Click on the OpenAll button will open all mail and override your filter settings.
+- Choose to have a number of bag slots always left free when opening mail.
+- QuickAttach: Allows you to quickly attach different trade items types to a mail.
+- A default recipient name can be specified by right clicking on a button.
+- Which bags are used by this feature can be set in the main menu.
+- Rake: Displays summary of money gained from opening mail.
+- Select: Adds checkboxes to the inbox with buttons for selective opening/returning
+- Added mail indicator numbers above the checkboxes.
+- Added help note that you can Shift-Click 2 checkboxes to select everything between them.
+- Added help note that you can Ctrl-Click a checkbox to select all mail from that sender.
+- Choose to have a number of bag slots always left free when opening mail.
+- TradeBlock: Block trades and guild charter signature invites from people while you are at the Inbox.
+- Wire: Autoupdate the subject field with money amount if blank.
+
+MailBuddy's menu and settings can be accessed at the upper right corner of your mailbox.
+
+Please post bugs or suggestions at https://github.com/MailBuddy82/MailBuddy/issues.
+MailBuddy Profiles
+
+While this might not be too intuitive to some users, each character that you log on will have its own initial Postal profile (settings). 
+If you wish that some or all your characters share the same profile (and hence share the same contact list), 
+then you can create a New Profile, call it anything you want such as "Shared by Alts", 
+and have all your other characters change to that profile.
+Mass Mailing Abilities
+
+MailBuddy does not come with any abilities to send out mass mails (i.e. messages to more than 1 person at a time). 
+There is no intention to add such functionality to Postal.
