@@ -1,6 +1,6 @@
 local MailBuddy = LibStub("AceAddon-3.0"):GetAddon("MailBuddy")
 local MailBuddy_DoNotWant = MailBuddy:NewModule("DoNotWant", "AceHook-3.0")
-local L = LibStub("AceLocale-3.0"):GetLocale("Postal")
+local L = LibStub("AceLocale-3.0"):GetLocale("MailBuddy")
 MailBuddy_DoNotWant.description = L["Shows a clickable visual icon as to whether a mail will be returned or deleted on expiry."]
 
 -- luacheck: globals InboxFrame
