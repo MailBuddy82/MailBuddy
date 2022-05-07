@@ -1,6 +1,6 @@
 ## Interface: 11403
 ## Title: MailBuddy
-## Version: v9.2.0
+## Version: v1.14.3
 ## X-Build: 101
 ## X-Revision: 101
 ## Author: Zetaprime82
