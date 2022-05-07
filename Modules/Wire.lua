@@ -1,5 +1,5 @@
 local MailBuddy = LibStub("AceAddon-3.0"):GetAddon("MailBuddy")
-local MailBuddy_Wire = Postal:NewModule("Wire", "AceHook-3.0")
+local MailBuddy_Wire = MailBuddy:NewModule("Wire", "AceHook-3.0")
 local L = LibStub("AceLocale-3.0"):GetLocale("MailBuddy")
 MailBuddy_Wire.description = L["Set subject field to value of coins sent if subject is blank."]
 
