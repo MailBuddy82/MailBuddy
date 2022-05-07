@@ -1,6 +1,6 @@
 local MailBuddy = LibStub("AceAddon-3.0"):GetAddon("MailBuddy")
 local MailBuddy_TradeBlock = MailBuddy:NewModule("TradeBlock", "AceEvent-3.0")
-local L = LibStub("AceLocale-3.0"):GetLocale("Postal")
+local L = LibStub("AceLocale-3.0"):GetLocale("MailBuddy")
 MailBuddy_TradeBlock.description = L["Block incoming trade requests while in a mail session."]
 
 function MailBuddy_TradeBlock:OnEnable()
