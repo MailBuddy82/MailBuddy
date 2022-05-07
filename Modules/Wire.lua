@@ -1,7 +1,7 @@
-local Postal = LibStub("AceAddon-3.0"):GetAddon("Postal")
-local Postal_Wire = Postal:NewModule("Wire", "AceHook-3.0")
-local L = LibStub("AceLocale-3.0"):GetLocale("Postal")
-Postal_Wire.description = L["Set subject field to value of coins sent if subject is blank."]
+local MailBuddy = LibStub("AceAddon-3.0"):GetAddon("MailBuddy")
+local MailBuddy_Wire = Postal:NewModule("Wire", "AceHook-3.0")
+local L = LibStub("AceLocale-3.0"):GetLocale("MailBuddy")
+MailBuddy_Wire.description = L["Set subject field to value of coins sent if subject is blank."]
 
 local g, s, c
 g = "^%["..GOLD_AMOUNT.." "..SILVER_AMOUNT.." "..COPPER_AMOUNT.."%]$"
@@ -20,16 +20,16 @@ g = gsub(g, "%%d", "%%d+")
 s = gsub(s, "%%d", "%%d+")
 c = gsub(c, "%%d", "%%d+")
 
-function Postal_Wire:OnEnable()
+function MailBuddy_Wire:OnEnable()
 	-- Secure hook so that it calls the original function
 	self:SecureHook(SendMailMoney, "onValueChangedFunc")
 end
 
 -- Disabling modules unregisters all events/hook automatically
---function Postal_Wire:OnDisable()
+--function MailBuddy_Wire:OnDisable()
 --end
 
-function Postal_Wire:onValueChangedFunc()
+function MailBuddy_Wire:onValueChangedFunc()
 	local subject = SendMailSubjectEditBox:GetText()
 	if subject == "" or subject:find(g) or subject:find(s) or subject:find(c) then
 		local money = MoneyInputFrame_GetCopper(SendMailMoney)
