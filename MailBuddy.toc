@@ -28,7 +28,7 @@ MailBuddy.lua
 # Users can comment out any module (or delete the .lua) of any module they do not wish to load
 ## Modules\Express.lua
 Modules\OpenAll.lua
-## Modules\Wire.lua
+Modules\Wire.lua
 ## Modules\Select.lua
 ## Modules\TradeBlock.lua
 ## Modules\Rake.lua
