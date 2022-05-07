@@ -536,7 +536,7 @@ function MailBuddy.About()
 		tinsert(t, "")
 	end
 	tinsert(t, "-----")
-	tinsert(t, L["Please post bugs at |cFF00FFFFMailBuddy|r. When posting bugs, indicate your locale and MailBuddy's version number v%s."]:format(version))
+	tinsert(t, L["Please post bugs at |cFF00FFFFhttps://github.com/MailBuddy82/MailBuddy/issues|r. When posting bugs, indicate your locale and MailBuddy's version number v%s."]:format(version))
 	tinsert(t, "")
 	tinsert(t, "- Zetaprime82 ")
 	tinsert(t, "")
