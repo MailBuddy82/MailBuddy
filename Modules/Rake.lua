@@ -1,6 +1,6 @@
 local MailBuddy = LibStub("AceAddon-3.0"):GetAddon("MailBuddy")
 local MailBuddy_Rake = MailBuddy:NewModule("Rake", "AceEvent-3.0")
-local L = LibStub("AceLocale-3.0"):GetLocale("Postal")
+local L = LibStub("AceLocale-3.0"):GetLocale("MailBuddy")
 MailBuddy_Rake.description = L["Prints the amount of money collected during a mail session."]
 
 local money
