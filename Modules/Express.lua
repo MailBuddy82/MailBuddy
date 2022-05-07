@@ -1,15 +1,15 @@
-local Postal = LibStub("AceAddon-3.0"):GetAddon("Postal")
-local Postal_Express = Postal:NewModule("Express", "AceEvent-3.0", "AceHook-3.0")
-local L = LibStub("AceLocale-3.0"):GetLocale("Postal")
-Postal_Express.description = L["Mouse click short cuts for mail."]
-Postal_Express.description2 = L[ [[|cFFFFCC00*|r Shift-Click to take item/money from mail.
+local MailBuddy = LibStub("AceAddon-3.0"):GetAddon("MailBuddy")
+local MailBuddy_Express = PMailBuddy:NewModule("Express", "AceEvent-3.0", "AceHook-3.0")
+local L = LibStub("AceLocale-3.0"):GetLocale("MailBuddy")
+MailBuddy_Express.description = L["Mouse click short cuts for mail."]
+MailBuddy_Express.description2 = L[ [[|cFFFFCC00*|r Shift-Click to take item/money from mail.
 |cFFFFCC00*|r Ctrl-Click to return mail.
 |cFFFFCC00*|r Alt-Click to move an item from your inventory to the current outgoing mail (same as right click in default UI).]] ]
 
 local _G = getfenv(0)
 
-function Postal_Express:MAIL_SHOW()
-	if Postal.db.profile.Express.EnableAltClick and not self:IsHooked(GameTooltip, "OnTooltipSetItem") then
+function MailBuddy_Express:MAIL_SHOW()
+	if MailBuddy.db.profile.Express.EnableAltClick and not self:IsHooked(GameTooltip, "OnTooltipSetItem") then
 		self:HookScript(GameTooltip, "OnTooltipSetItem")
 		self:RawHook("ContainerFrameItemButton_OnModifiedClick", true)
 	end
@@ -17,7 +17,7 @@ function Postal_Express:MAIL_SHOW()
 	self:RegisterEvent("PLAYER_LEAVING_WORLD", "Reset")
 end
 
-function Postal_Express:Reset(event)
+function MailBuddy_Express:Reset(event)
 	if self:IsHooked(GameTooltip, "OnTooltipSetItem") then
 		self:Unhook(GameTooltip, "OnTooltipSetItem")
 		self:Unhook("ContainerFrameItemButton_OnModifiedClick")
@@ -26,7 +26,7 @@ function Postal_Express:Reset(event)
 	self:UnregisterEvent("PLAYER_LEAVING_WORLD")
 end
 
-function Postal_Express:OnEnable()
+function MailBuddy_Express:OnEnable()
 	self:RawHook("InboxFrame_OnClick", true)
 	self:RawHook("InboxFrame_OnModifiedClick", "InboxFrame_OnClick", true) -- Eat all modified clicks too
 	self:RawHook("InboxFrameItem_OnEnter", true)
@@ -35,30 +35,30 @@ function Postal_Express:OnEnable()
 end
 
 -- Disabling modules unregisters all events/hook automatically
---function Postal_Express:OnDisable()
+--function MailBuddy_Express:OnDisable()
 --end
 
-local Postal_Express_cTip = CreateFrame("GameTooltip",'MailBagScanTooltip',nil,"GameTooltipTemplate")
-local function Postal_Express_IsSoulbound(bag, slot)
-    Postal_Express_cTip:SetOwner(UIParent, "ANCHOR_NONE")
-    Postal_Express_cTip:SetBagItem(bag, slot)
-    Postal_Express_cTip:Show()
+local MailBuddy_Express_cTip = CreateFrame("GameTooltip",'MailBagScanTooltip',nil,"GameTooltipTemplate")
+local function MailBuddy_Express_IsSoulbound(bag, slot)
+    MailBuddy_Express_cTip:SetOwner(UIParent, "ANCHOR_NONE")
+    MailBuddy_Express_cTip:SetBagItem(bag, slot)
+    MailBuddy_Express_cTip:Show()
     for i = 1,Postal_Express_cTip:NumLines() do
 		local str = _G['MailBagScanTooltipTextLeft' .. i]
 		if str and (str:GetText() == ITEM_SOULBOUND) then
             return true
         end
     end
-    Postal_Express_cTip:Hide()
+    MailBuddy_Express_cTip:Hide()
     return false
 end
 
-function Postal_Express:InboxFrameItem_OnEnter(this, motion)
+function MailBuddy_Express:InboxFrameItem_OnEnter(this, motion)
 	self.hooks["InboxFrameItem_OnEnter"](this, motion)
 	local tooltip = GameTooltip
 
 	local money, COD, _, hasItem, _, wasReturned, _, canReply = select(5, GetInboxHeaderInfo(this.index))
-	if Postal.db.profile.Express.MultiItemTooltip and hasItem and hasItem > 1 then
+	if MailBuddy.db.profile.Express.MultiItemTooltip and hasItem and hasItem > 1 then
 		for i = 1, ATTACHMENTS_MAX_RECEIVE do
 			local name, itemID, itemTexture, count, quality, canUse = GetInboxItem(this.index, i);
 			if name then
@@ -83,7 +83,7 @@ function Postal_Express:InboxFrameItem_OnEnter(this, motion)
 	tooltip:Show()
 end
 
-function Postal_Express:InboxFrame_OnClick(button, index)
+function MailBuddy_Express:InboxFrame_OnClick(button, index)
 	if IsShiftKeyDown() then
 		local cod = select(6, GetInboxHeaderInfo(index))
 		if cod <= 0 then
@@ -100,23 +100,23 @@ function Postal_Express:InboxFrame_OnClick(button, index)
 	end
 end
 
-function Postal_Express:OnTooltipSetItem(tooltip, ...)
+function MailBuddy_Express:OnTooltipSetItem(tooltip, ...)
 	local recipient = SendMailNameEditBox:GetText()
-	if Postal.db.profile.Express.AutoSend and recipient ~= "" and SendMailFrame:IsVisible() and not CursorHasItem() then
+	if MailBuddy.db.profile.Express.AutoSend and recipient ~= "" and SendMailFrame:IsVisible() and not CursorHasItem() then
 		tooltip:AddLine(string.format(L["|cffeda55fAlt-Click|r to send this item to %s."], recipient))
 	end
-	if Postal.db.profile.Express.BulkSend and SendMailFrame:IsVisible() and not CursorHasItem() then
+	if MailBuddy.db.profile.Express.BulkSend and SendMailFrame:IsVisible() and not CursorHasItem() then
 		tooltip:AddLine(L["|cffeda55fControl-Click|r to attach similar items."])
 	end
 end
 
-function Postal_Express:ContainerFrameItemButton_OnModifiedClick(this, button, ...)
+function MailBuddy_Express:ContainerFrameItemButton_OnModifiedClick(this, button, ...)
 	if button == "LeftButton" and IsAltKeyDown() and SendMailFrame:IsVisible() and not CursorHasItem() then
 		local bag, slot = this:GetParent():GetID(), this:GetID()
 		local texture, count = GetContainerItemInfo(bag, slot)
 		PickupContainerItem(bag, slot)
 		ClickSendMailItemButton()
-		if Postal.db.profile.Express.AutoSend then
+		if MailBuddy.db.profile.Express.AutoSend then
 			for i = 1, ATTACHMENTS_MAX_SEND do
 				-- get info about the attachment
 				local itemName, itemID, itemTexture, stackCount, quality = GetSendMailItem(i)
@@ -132,7 +132,7 @@ function Postal_Express:ContainerFrameItemButton_OnModifiedClick(this, button, .
 		local itemlocked = select(3,GetContainerItemInfo(bag,slot))
 		local itemq, _,_, itemc, itemsc, _, itemes = select(3,GetItemInfo(itemid))
 		itemes = itemes and #itemes > 0
-		if Postal.db.profile.Express.BulkSend and itemq and itemc then
+		if MailBuddy.db.profile.Express.BulkSend and itemq and itemc then
 			local itemsinmail = 0
 			for iloop = 1, ATTACHMENTS_MAX_SEND do
 				if HasSendMailItem(iloop) then itemsinmail = itemsinmail + 1 end
@@ -144,7 +144,7 @@ function Postal_Express:ContainerFrameItemButton_OnModifiedClick(this, button, .
 				for b = 0,4 do
 					for s = 1, GetContainerNumSlots(b) do
 						local tid = GetContainerItemID(b, s)
-						if not tid or select(3,GetContainerItemInfo(b,s)) or Postal_Express_IsSoulbound(b, s) then
+						if not tid or select(3,GetContainerItemInfo(b,s)) or MailBuddy_Express_IsSoulbound(b, s) then
 							-- item locked, already attached, soulbound
 						else
 							local tq, _,_, tc, tsc, _, tes = select(3,GetItemInfo(tid))
@@ -184,9 +184,9 @@ function Postal_Express:ContainerFrameItemButton_OnModifiedClick(this, button, .
 	end
 end
 
-function Postal_Express.SetEnableAltClick(dropdownbutton, arg1, arg2, checked)
-	local self = Postal_Express
-	Postal.db.profile.Express.EnableAltClick = checked
+function MailBuddy_Express.SetEnableAltClick(dropdownbutton, arg1, arg2, checked)
+	local self = MailBuddy_Express
+	MailBuddy.db.profile.Express.EnableAltClick = checked
 	if checked then
 		if MailFrame:IsVisible() and not self:IsHooked(GameTooltip, "OnTooltipSetItem") then
 			self:HookScript(GameTooltip, "OnTooltipSetItem")
@@ -210,42 +210,42 @@ function Postal_Express.SetEnableAltClick(dropdownbutton, arg1, arg2, checked)
 	end
 end
 
-function Postal_Express.SetAutoSend(dropdownbutton, arg1, arg2, checked)
-	Postal.db.profile.Express.AutoSend = checked
+function MailBuddy_Express.SetAutoSend(dropdownbutton, arg1, arg2, checked)
+	MailBuddy.db.profile.Express.AutoSend = checked
 end
 
-function Postal_Express.SetBulkSend(dropdownbutton, arg1, arg2, checked)
-	Postal.db.profile.Express.BulkSend = checked
+function MailBuddy_Express.SetBulkSend(dropdownbutton, arg1, arg2, checked)
+	MailBuddy.db.profile.Express.BulkSend = checked
 end
 
-function Postal_Express.ModuleMenu(self, level)
+function MailBuddy_Express.ModuleMenu(self, level)
 	if not level then return end
 	local info = self.info
 	wipe(info)
 	info.isNotRadio = 1
 	if level == 1 + self.levelAdjust then
-		local db = Postal.db.profile.Express
+		local db = MailBuddy.db.profile.Express
 		info.keepShownOnClick = 1
 
 		info.text = L["Enable Alt-Click to send mail"]
-		info.func = Postal_Express.SetEnableAltClick
+		info.func = MailBuddy_Express.SetEnableAltClick
 		info.checked = db.EnableAltClick
 		UIDropDownMenu_AddButton(info, level)
 
 		info.text = L["Auto-Send on Alt-Click"]
-		info.func = Postal_Express.SetAutoSend
+		info.func = MailBuddy_Express.SetAutoSend
 		info.checked = db.AutoSend
-		info.disabled = not Postal.db.profile.Express.EnableAltClick
+		info.disabled = not MailBuddy.db.profile.Express.EnableAltClick
 		UIDropDownMenu_AddButton(info, level)
 
 		info.text = L["Auto-Attach similar items on Control-Click"]
-		info.func = Postal_Express.SetBulkSend
+		info.func = MailBuddy_Express.SetBulkSend
 		info.checked = db.BulkSend
 		info.disabled = nil
 		UIDropDownMenu_AddButton(info, level)
 
 		info.text = L["Add multiple item mail tooltips"]
-		info.func = Postal.SaveOption
+		info.func = MailBuddy.SaveOption
 		info.checked = db.MultiItemTooltip
 		info.arg1 = "Express"
 		info.arg2 = "MultiItemTooltip"
