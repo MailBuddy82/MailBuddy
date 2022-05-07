@@ -1,11 +1,11 @@
-local Postal = LibStub("AceAddon-3.0"):GetAddon("Postal")
-local Postal_CarbonCopy = Postal:NewModule("CarbonCopy", "AceHook-3.0")
-local L = LibStub("AceLocale-3.0"):GetLocale("Postal")
-Postal_CarbonCopy.description = L["Allows you to copy the contents of a mail."]
+local MailBuddy = LibStub("AceAddon-3.0"):GetAddon("MailBuddy")
+local MailBuddy_CarbonCopy = MailBuddy:NewModule("CarbonCopy", "AceHook-3.0")
+local L = LibStub("AceLocale-3.0"):GetLocale("MailBuddy")
+MailBuddy_CarbonCopy.description = L["Allows you to copy the contents of a mail."]
 
 -- luacheck: globals InboxFrame OpenMailScrollFrame
 
-function Postal_CarbonCopy:OnEnable()
+function MailBuddy_CarbonCopy:OnEnable()
 	self:Hook("OpenMail_Update", true)
 	if OpenMailScrollFrame:IsVisible() then
 		self:OpenMail_Update()
@@ -13,13 +13,13 @@ function Postal_CarbonCopy:OnEnable()
 end
 
 -- Disabling modules unregisters all events/hook automatically
-function Postal_CarbonCopy:OnDisable()
+function MailBuddy_CarbonCopy:OnDisable()
 	if self.button then
 		self.button:Hide()
 	end
 end
 
-function Postal_CarbonCopy:OpenMail_Update()
+function MailBuddy_CarbonCopy:OpenMail_Update()
 	if not InboxFrame.openMailID then return end
 	local bodyText, _, _, isInvoice = GetInboxText(InboxFrame.openMailID)
 
@@ -36,7 +36,7 @@ function Postal_CarbonCopy:OpenMail_Update()
 	end
 end
 
-function Postal_CarbonCopy:CopyMail()
+function MailBuddy_CarbonCopy:CopyMail()
 	-- Build the string
 	local _, _, sender, subject = GetInboxHeaderInfo(InboxFrame.openMailID)
 	sender = FROM.." "..(sender or UNKNOWN).."\r\n"
@@ -55,7 +55,7 @@ function Postal_CarbonCopy:CopyMail()
 				end
 				bodyText = bodyText..SOLD_BY_COLON.." "..playerName.."\r\n"
 					.."----------------------------------------\r\n"
-					..AMOUNT_PAID_COLON.." "..Postal:GetMoneyStringPlain(bid)
+					..AMOUNT_PAID_COLON.." "..MailBuddy:GetMoneyStringPlain(bid)
 			elseif invoiceType == "seller" then
 				bodyText = bodyText..ITEM_SOLD_COLON.." "..itemName.."\r\n"
 				..PURCHASED_BY_COLON.." "..playerName
@@ -64,26 +64,26 @@ function Postal_CarbonCopy:CopyMail()
 				else
 					bodyText = bodyText.." ("..HIGH_BIDDER..")\r\n\r\n"
 				end
-				bodyText = bodyText..SALE_PRICE_COLON.." "..Postal:GetMoneyStringPlain(bid).."\r\n"
-					..DEPOSIT_COLON.." "..Postal:GetMoneyStringPlain(deposit).."\r\n"
-					..AUCTION_HOUSE_CUT_COLON.." "..Postal:GetMoneyStringPlain(consignment).."\r\n"
+				bodyText = bodyText..SALE_PRICE_COLON.." "..MailBuddy:GetMoneyStringPlain(bid).."\r\n"
+					..DEPOSIT_COLON.." "..MailBuddy:GetMoneyStringPlain(deposit).."\r\n"
+					..AUCTION_HOUSE_CUT_COLON.." "..MailBuddy:GetMoneyStringPlain(consignment).."\r\n"
 					.."----------------------------------------\r\n"
-					..AMOUNT_RECEIVED_COLON.." "..Postal:GetMoneyStringPlain(bid+deposit-consignment)
+					..AMOUNT_RECEIVED_COLON.." "..MailBuddy:GetMoneyStringPlain(bid+deposit-consignment)
 			end
 		end
 	end
 
 	-- Copy to frame
-	if Postal.CreateAboutFrame then
-		Postal:CreateAboutFrame()
+	if MailBuddy.CreateAboutFrame then
+		MailBuddy:CreateAboutFrame()
 	end
-	Postal.aboutFrame:Show()
-	Postal.aboutFrame.editBox:SetText(sender..subject..bodyText.."\r\n")
-	Postal.aboutFrame.editBox:HighlightText(0)
-	Postal.aboutFrame.editBox:SetFocus()
+	MailBuddy.aboutFrame:Show()
+	MailBuddy.aboutFrame.editBox:SetText(sender..subject..bodyText.."\r\n")
+	MailBuddy.aboutFrame.editBox:HighlightText(0)
+	MailBuddy.aboutFrame.editBox:SetFocus()
 end
 
-function Postal_CarbonCopy:CreateButton()
+function MailBuddy_CarbonCopy:CreateButton()
 	local button = CreateFrame("Button", nil, OpenMailScrollFrame)
 	button:SetPoint("TOPRIGHT", OpenMailScrollFrame, "TOPRIGHT", 0, 0)
 	button:SetHeight(10)
@@ -91,7 +91,7 @@ function Postal_CarbonCopy:CreateButton()
 	button:SetNormalTexture(select(3, GetSpellInfo(586)))
 	button:SetHighlightTexture([[Interface\Buttons\ButtonHilight-Square]])
 	button:SetScript("OnClick", function()
-		Postal_CarbonCopy:CopyMail()
+		MailBuddy_CarbonCopy:CopyMail()
 	end)
 	button:SetScript("OnEnter", function(self)
 		self:SetHeight(28)
@@ -107,6 +107,6 @@ function Postal_CarbonCopy:CreateButton()
 		GameTooltip:Hide()
 	end)
 	self.button = button
-	OpenMailScrollFrame.PostalCarbonCopyButton = button
+	OpenMailScrollFrame.MailBuddyCarbonCopyButton = button
 	self.CreateButton = nil -- Kill ourselves
 end
