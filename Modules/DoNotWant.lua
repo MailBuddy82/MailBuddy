@@ -92,7 +92,7 @@ function MailBuddy_DoNotWant:OnEnable()
 	self:RawHook("InboxFrame_Update", true)
 end
 
-function Postal_DoNotWant:OnDisable()
+function MailBuddy_DoNotWant:OnDisable()
 	if self:IsHooked("InboxFrame_Update") then
 		self:Unhook("InboxFrame_Update")
 	end
