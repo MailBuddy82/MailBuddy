@@ -21,7 +21,7 @@ function MailBuddy_Forward:OnEnable()
 		MailBuddyForwardButton:SetPoint("RIGHT", "OpenMailReplyButton", "LEFT", 0, 0)
 		MailBuddyForwardButton:SetText(L["Forward"])
 		MailBuddyForwardButton:SetScript("OnClick", function() MailBuddy_Forward_OpenMail_Forward() end)
-		MailBuddyForwardButton:SetFrameLevel(PostalForwardButton:GetFrameLevel() + 1)
+		MailBuddyForwardButton:SetFrameLevel(MailBuddyForwardButton:GetFrameLevel() + 1)
 	end
 	if OpenMailForwardButton then OpenMailForwardButton:Show() end
 	self:SecureHook("InboxFrame_OnClick", MailBuddy_Forward_OpenMailFrameUpdated)
