@@ -1,8 +1,8 @@
-local Postal = LibStub("AceAddon-3.0"):GetAddon("Postal")
-local Postal_QuickAttach = Postal:NewModule("QuickAttach", "AceHook-3.0", "AceEvent-3.0")
-local L = LibStub("AceLocale-3.0"):GetLocale("Postal")
-Postal_QuickAttach.description = L["Allows you to quickly attach different trade items types to a mail."]
-Postal_QuickAttach.description2 = L[ [[|cFFFFCC00*|r A default recipient name can be specified by right clicking on a button.
+local MailBuddy = LibStub("AceAddon-3.0"):GetAddon("MailBuddy")
+local MailBuddy_QuickAttach = MailBuddy:NewModule("QuickAttach", "AceHook-3.0", "AceEvent-3.0")
+local L = LibStub("AceLocale-3.0"):GetLocale("MailBuddy")
+MailBuddy_QuickAttach.description = L["Allows you to quickly attach different trade items types to a mail."]
+MailBuddy_QuickAttach.description2 = L[ [[|cFFFFCC00*|r A default recipient name can be specified by right clicking on a button.
 |cFFFFCC00*|r Which bags are used by this feature can be set in the main menu.]] ]
 -- Trade Goods supported itemType for GetItemInfo() by WoW release version
 -- Classic: Trade Goods(0), Reagent(5, 0)
@@ -37,81 +37,81 @@ local function CreateQAButton(name, texture, classID, subclassID, toolTip)
 	TempButton.NormalTexture:SetPoint("TOPLEFT", TempButton ,"TOPLEFT", math.floor(-15 * scale), math.floor(15 * scale))
 	TempButton.NormalTexture:SetPoint("BOTTOMRIGHT", TempButton ,"BOTTOMRIGHT", math.floor(15 * scale), math.floor(-15 * scale))
 	TempButton:RegisterForClicks("AnyUp")
-	TempButton:SetScript("OnClick", function(self, button, down) Postal_QuickAttachButtonClick(button, classID, subclassID) end)
+	TempButton:SetScript("OnClick", function(self, button, down) MailBuddy_QuickAttachButtonClick(button, classID, subclassID) end)
 	TempButton:SetFrameLevel(TempButton:GetFrameLevel() + 1)
-	QAButtonCharName = Postal_QuickAttachGetQAButtonCharName(classID, subclassID)
+	QAButtonCharName = MailBuddy_QuickAttachGetQAButtonCharName(classID, subclassID)
 	if QAButtonCharName ~= "" then toolTip = toolTip.."\n"..L["Default recipient:"].." "..QAButtonCharName end
 	SetQAButtonGameTooltip(TempButton, toolTip)
 	QAButtonPos = QAButtonPos + 1
 end
 
 -- Hide QuickAttach Buttons
-local function Postal_QuickAttachHideButtons()
+local function MailBuddy_QuickAttachHideButtons()
 	local i, name
 	for i = 1, #QAButtons, 1 do
-		name = "Postal_QuickAttachButton"..tostring(i)
+		name = "MailBuddy_QuickAttachButton"..tostring(i)
 		if _G[name] then _G[name]:Hide() end
 	end
 end
 
 -- Show QuickAttach Buttons
-local function Postal_QuickAttachShowButtons()
+local function MailBuddy_QuickAttachShowButtons()
 	local i, name
 	for i = 1, #QAButtons, 1 do
-		name = "Postal_QuickAttachButton"..tostring(i)
+		name = "MailBuddy_QuickAttachButton"..tostring(i)
 		if _G[name] then _G[name]:Show() end
 	end
 end
 
 -- Create QuickAttach buttons and hook OnClick events
-function Postal_QuickAttach:OnEnable()
-	if not Postal_QuickAttachButton1 then
+function MailBuddy_QuickAttach:OnEnable()
+	if not MailBuddy_QuickAttachButton1 then
 		QAButtons = {}
-		if Postal.WOWClassic == true then
-			table.insert(QAButtons, {"Postal_QuickAttachButton1", GetSpellTexture(2018), 7, 0, L["Trade Goods"]})
-			table.insert(QAButtons, {"Postal_QuickAttachButton2", "Interface/Icons/inv_misc_food_02", 5, 0, L["Reagent"]})
+		if MailBuddy.WOWClassic == true then
+			table.insert(QAButtons, {"MailBuddy_QuickAttachButton1", GetSpellTexture(2018), 7, 0, L["Trade Goods"]})
+			table.insert(QAButtons, {"MailBuddy_QuickAttachButton2", "Interface/Icons/inv_misc_food_02", 5, 0, L["Reagent"]})
 		end
-		if Postal.WOWBCClassic == true then
-			table.insert(QAButtons, {"Postal_QuickAttachButton1", GetSpellTexture(3908), 7, 5, L["Cloth"]})
-			table.insert(QAButtons, {"Postal_QuickAttachButton2", GetSpellTexture(2108), 7, 6, L["Leather"]})
-			table.insert(QAButtons, {"Postal_QuickAttachButton3", GetSpellTexture(2656), 7, 7, L["Metal & Stone"]})
-			table.insert(QAButtons, {"Postal_QuickAttachButton4", GetSpellTexture(2550), 7, 8, L["Cooking"]})
-			table.insert(QAButtons, {"Postal_QuickAttachButton5", GetSpellTexture(2383), 7, 9, L["Herb"]})
-			table.insert(QAButtons, {"Postal_QuickAttachButton6", GetSpellTexture(7411), 7, 12, L["Enchanting"]})
-			table.insert(QAButtons, {"Postal_QuickAttachButton7", GetSpellTexture(25229), 7, 4, L["Jewelcrafting"]})
-			table.insert(QAButtons, {"Postal_QuickAttachButton8", "Interface/Icons/INV_Gizmo_FelIronCasing", 7, 1, L["Parts"]})
-			table.insert(QAButtons, {"Postal_QuickAttachButton9", "Interface/Icons/INV_Elemental_Primal_Air", 7, 10, L["Elemental"]})
-			table.insert(QAButtons, {"Postal_QuickAttachButton10", "Interface/Icons/inv_gizmo_goblingtonkcontroller", 7, 3, L["Devices"]})
-			table.insert(QAButtons, {"Postal_QuickAttachButton11", "Interface/Icons/INV_Misc_Ammo_Gunpowder_01", 7, 2, L["Explosives"]})
-			table.insert(QAButtons, {"Postal_QuickAttachButton12", "Interface/Icons/INV_Misc_Rune_09", 7, 11, L["Other"]})
-			table.insert(QAButtons, {"Postal_QuickAttachButton13", "Interface/Icons/Ability_Ensnare", 7, -1, L["Trade Goods"]})
+		if MailBuddy.WOWBCClassic == true then
+			table.insert(QAButtons, {"MailBuddy_QuickAttachButton1", GetSpellTexture(3908), 7, 5, L["Cloth"]})
+			table.insert(QAButtons, {"MailBuddy_QuickAttachButton2", GetSpellTexture(2108), 7, 6, L["Leather"]})
+			table.insert(QAButtons, {"MailBuddy_QuickAttachButton3", GetSpellTexture(2656), 7, 7, L["Metal & Stone"]})
+			table.insert(QAButtons, {"MailBuddy_QuickAttachButton4", GetSpellTexture(2550), 7, 8, L["Cooking"]})
+			table.insert(QAButtons, {"MailBuddy_QuickAttachButton5", GetSpellTexture(2383), 7, 9, L["Herb"]})
+			table.insert(QAButtons, {"MailBuddy_QuickAttachButton6", GetSpellTexture(7411), 7, 12, L["Enchanting"]})
+			table.insert(QAButtons, {"MailBuddy_QuickAttachButton7", GetSpellTexture(25229), 7, 4, L["Jewelcrafting"]})
+			table.insert(QAButtons, {"MailBuddy_QuickAttachButton8", "Interface/Icons/INV_Gizmo_FelIronCasing", 7, 1, L["Parts"]})
+			table.insert(QAButtons, {"MailBuddy_QuickAttachButton9", "Interface/Icons/INV_Elemental_Primal_Air", 7, 10, L["Elemental"]})
+			table.insert(QAButtons, {"MailBuddy_QuickAttachButton10", "Interface/Icons/inv_gizmo_goblingtonkcontroller", 7, 3, L["Devices"]})
+			table.insert(QAButtons, {"MailBuddy_QuickAttachButton11", "Interface/Icons/INV_Misc_Ammo_Gunpowder_01", 7, 2, L["Explosives"]})
+			table.insert(QAButtons, {"MailBuddy_QuickAttachButton12", "Interface/Icons/INV_Misc_Rune_09", 7, 11, L["Other"]})
+			table.insert(QAButtons, {"MailBuddy_QuickAttachButton13", "Interface/Icons/Ability_Ensnare", 7, -1, L["Trade Goods"]})
 		end
-		if Postal.WOWRetail == true then
-			table.insert(QAButtons, {"Postal_QuickAttachButton1", GetSpellTexture(3908), 7, 5, L["Cloth"]})
-			table.insert(QAButtons, {"Postal_QuickAttachButton2", GetSpellTexture(2108), 7, 6, L["Leather"]})
-			table.insert(QAButtons, {"Postal_QuickAttachButton3", GetSpellTexture(2656), 7, 7, L["Metal & Stone"]})
-			table.insert(QAButtons, {"Postal_QuickAttachButton4", GetSpellTexture(2550), 7, 8, L["Cooking"]})
-			table.insert(QAButtons, {"Postal_QuickAttachButton5", GetSpellTexture(2383), 7, 9, L["Herb"]})
-			table.insert(QAButtons, {"Postal_QuickAttachButton6", GetSpellTexture(7411), 7, 12, L["Enchanting"]})
-			table.insert(QAButtons, {"Postal_QuickAttachButton7", GetSpellTexture(45357), 7, 16, L["Inscription"]})
-			table.insert(QAButtons, {"Postal_QuickAttachButton8", GetSpellTexture(25229), 7, 4, L["Jewelcrafting"]})
-			table.insert(QAButtons, {"Postal_QuickAttachButton9", "Interface/Icons/INV_Gizmo_FelIronCasing", 7, 1, L["Parts"]})
-			table.insert(QAButtons, {"Postal_QuickAttachButton10", "Interface/Icons/INV_Elemental_Primal_Air", 7, 10, L["Elemental"]})
-			table.insert(QAButtons, {"Postal_QuickAttachButton11", "Interface/Icons/INV_Bijou_Green", 7, 18, L["Optional Reagents"]})
-			table.insert(QAButtons, {"Postal_QuickAttachButton12", "Interface/Icons/INV_Misc_Rune_09", 7, 11, L["Other"]})
-			table.insert(QAButtons, {"Postal_QuickAttachButton13", "Interface/Icons/Ability_Ensnare", 7, -1, L["Trade Goods"]})
+		if MailBuddy.WOWRetail == true then
+			table.insert(QAButtons, {"MailBuddy_QuickAttachButton1", GetSpellTexture(3908), 7, 5, L["Cloth"]})
+			table.insert(QAButtons, {"MailBuddy_QuickAttachButton2", GetSpellTexture(2108), 7, 6, L["Leather"]})
+			table.insert(QAButtons, {"MailBuddy_QuickAttachButton3", GetSpellTexture(2656), 7, 7, L["Metal & Stone"]})
+			table.insert(QAButtons, {"MailBuddy_QuickAttachButton4", GetSpellTexture(2550), 7, 8, L["Cooking"]})
+			table.insert(QAButtons, {"MailBuddy_QuickAttachButton5", GetSpellTexture(2383), 7, 9, L["Herb"]})
+			table.insert(QAButtons, {"MailBuddy_QuickAttachButton6", GetSpellTexture(7411), 7, 12, L["Enchanting"]})
+			table.insert(QAButtons, {"MailBuddy_QuickAttachButton7", GetSpellTexture(45357), 7, 16, L["Inscription"]})
+			table.insert(QAButtons, {"MailBuddy_QuickAttachButton8", GetSpellTexture(25229), 7, 4, L["Jewelcrafting"]})
+			table.insert(QAButtons, {"MailBuddy_QuickAttachButton9", "Interface/Icons/INV_Gizmo_FelIronCasing", 7, 1, L["Parts"]})
+			table.insert(QAButtons, {"MailBuddy_QuickAttachButton10", "Interface/Icons/INV_Elemental_Primal_Air", 7, 10, L["Elemental"]})
+			table.insert(QAButtons, {"MailBuddy_QuickAttachButton11", "Interface/Icons/INV_Bijou_Green", 7, 18, L["Optional Reagents"]})
+			table.insert(QAButtons, {"MailBuddy_QuickAttachButton12", "Interface/Icons/INV_Misc_Rune_09", 7, 11, L["Other"]})
+			table.insert(QAButtons, {"MailBuddy_QuickAttachButton13", "Interface/Icons/Ability_Ensnare", 7, -1, L["Trade Goods"]})
 		end
 		for i = 1, #QAButtons, 1 do
 			CreateQAButton(QAButtons[i][1], QAButtons[i][2], QAButtons[i][3], QAButtons[i][4], QAButtons[i][5])
 		end
 	end
-	Postal_QuickAttachShowButtons()
+	MailBuddy_QuickAttachShowButtons()
 end
 
 -- Disabling modules unregisters all events/hook automatically
-function Postal_QuickAttach:OnDisable()
-	Postal_QuickAttach:UnregisterAllEvents()
-	Postal_QuickAttachHideButtons()
+function MailBuddy_QuickAttach:OnDisable()
+	MailBuddy_QuickAttach:UnregisterAllEvents()
+	MailBuddy_QuickAttachHideButtons()
 end
 
 -- Return how many free item slots are in the current send mail
@@ -128,24 +128,24 @@ end
 
 -- Take an action based on a QuickAttach button click
 function Postal_QuickAttachButtonClick(button, classID, subclassID)
-	if (button ==  "LeftButton") then Postal_QuickAttachLeftButtonClick(classID, subclassID) end
-	if (button ==  "RightButton") then Postal_QuickAttachRightButtonClick(classID, subclassID) end
+	if (button ==  "LeftButton") then MailBuddy_QuickAttachLeftButtonClick(classID, subclassID) end
+	if (button ==  "RightButton") then MailBuddy_QuickAttachRightButtonClick(classID, subclassID) end
 end
 
 -- Attach as many items as possible of the specified type to the current send mail.
 function Postal_QuickAttachLeftButtonClick(classID, subclassID)
 	local bagID, bindType, itemclassID, itemID, itemsubclassID, locked, slot, slotIndex
-	local name = Postal_QuickAttachGetQAButtonCharName(classID, subclassID)
+	local name = MailBuddy_QuickAttachGetQAButtonCharName(classID, subclassID)
 	if name ~= "" then
 		SendMailNameEditBox:SetText(name)
 		SendMailNameEditBox:HighlightText()
 	end
 	for bagID = 0, 4, 1 do
-		if (bagID == 0) and Postal.db.profile.QuickAttach.EnableBag0 or
-			(bagID == 1) and Postal.db.profile.QuickAttach.EnableBag1 or
-			(bagID == 2) and Postal.db.profile.QuickAttach.EnableBag2 or
-			(bagID == 3) and Postal.db.profile.QuickAttach.EnableBag3 or
-			(bagID == 4) and Postal.db.profile.QuickAttach.EnableBag4
+		if (bagID == 0) and MailBuddy.db.profile.QuickAttach.EnableBag0 or
+			(bagID == 1) and MailBuddy.db.profile.QuickAttach.EnableBag1 or
+			(bagID == 2) and MailBuddy.db.profile.QuickAttach.EnableBag2 or
+			(bagID == 3) and MailBuddy.db.profile.QuickAttach.EnableBag3 or
+			(bagID == 4) and MailBuddy.db.profile.QuickAttach.EnableBag4
 		then
 			local numberOfSlots = GetContainerNumSlots(bagID)
 			for slotIndex = 1, numberOfSlots, 1 do
@@ -174,18 +174,18 @@ function Postal_QuickAttachLeftButtonClick(classID, subclassID)
 end
 
 -- Set the default recipient name to be filled in for the specified type.
-function Postal_QuickAttachRightButtonClick(classID, subclassID)
-	local name = Postal_QuickAttachGetQAButtonCharName(classID, subclassID)
+function MailBuddy_QuickAttachRightButtonClick(classID, subclassID)
+	local name = MailBuddy_QuickAttachGetQAButtonCharName(classID, subclassID)
 	QAButtonDialogInfo = name.."|"..classID.."|"..subclassID
-	StaticPopup_Show("POSTAL_QUICKATTACH_CHARACTER_NAME")
+	StaticPopup_Show("MAILBUDDY_QUICKATTACH_CHARACTER_NAME")
 end
 
 -- Check if a default character name for the specified type has been set and return it.
-function Postal_QuickAttachGetQAButtonCharName(classID, subclassID)
-	local db = Postal.db.profile
+function MailBuddy_QuickAttachGetQAButtonCharName(classID, subclassID)
+	local db = MailBuddy.db.profile
 	if not (db.QuickAttach) then return "" end
 	if not (db.QuickAttach.QAbuttons) then return "" end
-	db = Postal.db.profile.QuickAttach.QAbuttons
+	db = MailBuddy.db.profile.QuickAttach.QAbuttons
 	for i = #db, 1, -1 do
 		local n, c, s = strsplit("|", db[i])
 		if tonumber(c) == tonumber(classID) and tonumber(s) == tonumber(subclassID) then
@@ -196,12 +196,12 @@ function Postal_QuickAttachGetQAButtonCharName(classID, subclassID)
 end
 
 -- Set and store a default character name for the specified type.
-local function Postal_QuickAttachSetQAButtonCharName(name, classID, subclassID)
-	local db = Postal.db.profile
+local function MailBuddy_QuickAttachSetQAButtonCharName(name, classID, subclassID)
+	local db = MailBuddy.db.profile
 	local buttonString = ("%s|%s|%s"):format(name, classID, subclassID)
 	if not (db.QuickAttach) then db.QuickAttach = {} end
 	if not (db.QuickAttach.QAbuttons) then db.QuickAttach.QAbuttons = {} end
-	db = Postal.db.profile.QuickAttach.QAbuttons
+	db = MailBuddy.db.profile.QuickAttach.QAbuttons
 	for i = #db, 1, -1 do
 		local n, c, s = strsplit("|", db[i])
 		if tonumber(c) == tonumber(classID) and tonumber(s) == tonumber(subclassID) then
@@ -210,7 +210,7 @@ local function Postal_QuickAttachSetQAButtonCharName(name, classID, subclassID)
 	end
 	if name ~= "" then tinsert(db, buttonString) end
 	table.sort(db)
-	if #db == 0 then wipe(Postal.db.profile.QuickAttach) end
+	if #db == 0 then wipe(MailBuddy.db.profile.QuickAttach) end
 	for i = 1, #QAButtons, 1 do
 		local c, s, t = QAButtons[i][3], QAButtons[i][4], QAButtons[i][5]
 		if tonumber(c) == tonumber(classID) and tonumber(s) == tonumber(subclassID) then
@@ -221,7 +221,7 @@ local function Postal_QuickAttachSetQAButtonCharName(name, classID, subclassID)
 end
 
 -- Define static popup for default character name dialog.
-StaticPopupDialogs["POSTAL_QUICKATTACH_CHARACTER_NAME"] = {
+StaticPopupDialogs["MAILBUDDY_QUICKATTACH_CHARACTER_NAME"] = {
 	text = L["Default recipient:"],
 	button1 = ACCEPT,
 	button2 = CANCEL,
@@ -231,7 +231,7 @@ StaticPopupDialogs["POSTAL_QUICKATTACH_CHARACTER_NAME"] = {
 	OnAccept = function(self)
 		local name, classID, subclassID = strsplit("|", QAButtonDialogInfo)
 		name = strtrim(self.editBox:GetText())
-		Postal_QuickAttachSetQAButtonCharName(name, classID, subclassID)	
+		MailBuddy_QuickAttachSetQAButtonCharName(name, classID, subclassID)	
 	end,
 	OnShow = function(self)
 		local name, classID, subclassID = strsplit("|", QAButtonDialogInfo)
@@ -244,7 +244,7 @@ StaticPopupDialogs["POSTAL_QUICKATTACH_CHARACTER_NAME"] = {
 		local parent = self:GetParent()
 		local name, classID, subclassID = strsplit("|", QAButtonDialogInfo)
 		name = strtrim(parent.editBox:GetText())
-		Postal_QuickAttachSetQAButtonCharName(name, classID, subclassID)	
+		MailBuddy_QuickAttachSetQAButtonCharName(name, classID, subclassID)	
 		parent:Hide()
 	end,
 	EditBoxOnEscapePressed = StaticPopupDialogs["SET_GUILDPLAYERNOTE"].EditBoxOnEscapePressed,
@@ -255,48 +255,48 @@ StaticPopupDialogs["POSTAL_QUICKATTACH_CHARACTER_NAME"] = {
 }
 
 -- Creat QuickAttach Menu
-function Postal_QuickAttach.ModuleMenu(self, level)
+function MailBuddy_QuickAttach.ModuleMenu(self, level)
 	if not level then return end
 	local info = self.info
 	wipe(info)
 	info.isNotRadio = 1
 	if level == 1 + self.levelAdjust then
-		local db = Postal.db.profile.QuickAttach
+		local db = MailBuddy.db.profile.QuickAttach
 		info.keepShownOnClick = 1
 
 		info.text = L["Enable for backpack"]
-		info.func = Postal.SaveOption
+		info.func = MailBuddy.SaveOption
 		info.arg1 = "QuickAttach"
 		info.arg2 = "EnableBag0"
-		info.checked = Postal.db.profile.QuickAttach.EnableBag0
+		info.checked = MailBuddy.db.profile.QuickAttach.EnableBag0
 		UIDropDownMenu_AddButton(info, level)
 
 		info.text = L["Enable for bag one"]
-		info.func = Postal.SaveOption
+		info.func = MailBuddy.SaveOption
 		info.arg1 = "QuickAttach"
 		info.arg2 = "EnableBag1"
-		info.checked = Postal.db.profile.QuickAttach.EnableBag1
+		info.checked = MailBuddy.db.profile.QuickAttach.EnableBag1
 		UIDropDownMenu_AddButton(info, level)
 
 		info.text = L["Enable for bag two"]
-		info.func = Postal.SaveOption
+		info.func = MailBuddy.SaveOption
 		info.arg1 = "QuickAttach"
 		info.arg2 = "EnableBag2"
-		info.checked = Postal.db.profile.QuickAttach.EnableBag2
+		info.checked = MailBuddy.db.profile.QuickAttach.EnableBag2
 		UIDropDownMenu_AddButton(info, level)
 
 		info.text = L["Enable for bag three"]
-		info.func = Postal.SaveOption
+		info.func = MailBuddy.SaveOption
 		info.arg1 = "QuickAttach"
 		info.arg2 = "EnableBag3"
-		info.checked = Postal.db.profile.QuickAttach.EnableBag3
+		info.checked = MailBuddy.db.profile.QuickAttach.EnableBag3
 		UIDropDownMenu_AddButton(info, level)
 
 		info.text = L["Enable for bag four"]
-		info.func = Postal.SaveOption
+		info.func = MailBuddy.SaveOption
 		info.arg1 = "QuickAttach"
 		info.arg2 = "EnableBag4"
-		info.checked = Postal.db.profile.QuickAttach.EnableBag4
+		info.checked = MailBuddy.db.profile.QuickAttach.EnableBag4
 		UIDropDownMenu_AddButton(info, level)
 	end
 end
