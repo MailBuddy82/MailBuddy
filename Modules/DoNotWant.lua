@@ -81,7 +81,7 @@ function MailBuddy_DoNotWant:OnEnable()
 			b.returnicon.texture:SetAllPoints()
 			b.returnicon.texture:SetTexCoord(1, 0, 0, 1) -- flips image left/right
 			b.returnicon.id = i
-			b.returnicon:SetScript("OnClick", Postal_DoNotWant.Click)
+			b.returnicon:SetScript("OnClick", MailBuddy_DoNotWant.Click)
 			b.returnicon:SetScript("OnEnter", b:GetScript("OnEnter"))
 			b.returnicon:SetScript("OnLeave", b:GetScript("OnLeave"))
 		end
