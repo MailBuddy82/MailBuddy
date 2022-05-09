@@ -1,8 +1,8 @@
 ## Interface: 90200
 ## Title: MailBuddy
 ## Version: v9.2.0
-## X-Build: 101
-## X-Revision: 101
+## X-Build: 102
+## X-Revision: 102
 ## Author: Zetaprime82
 ## X-Category: Mail
 ## Notes: MailBuddy: Enhanced Mailbox support
