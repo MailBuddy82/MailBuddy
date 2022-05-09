@@ -1,5 +1,5 @@
 local MailBuddy = LibStub("AceAddon-3.0"):GetAddon("MailBuddy")
-local MailBuddy_Express = PMailBuddy:NewModule("Express", "AceEvent-3.0", "AceHook-3.0")
+local MailBuddy_Express = MailBuddy:NewModule("Express", "AceEvent-3.0", "AceHook-3.0")
 local L = LibStub("AceLocale-3.0"):GetLocale("MailBuddy")
 MailBuddy_Express.description = L["Mouse click short cuts for mail."]
 MailBuddy_Express.description2 = L[ [[|cFFFFCC00*|r Shift-Click to take item/money from mail.
